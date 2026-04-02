@@ -4,22 +4,22 @@ def download_high_quality_m4a(url):
     ydl_opts = {
         'format': 'bestaudio/best',
         
-        # 1. Download thumbnail wajib diaktifkan
+        # 1. Download thumbnail must be enabled
         'writethumbnail': True, 
         
         'postprocessors': [
-            # 2. Konversi thumbnail ke JPG agar kompatibel dengan M4A
+            # 2. Convert thumbnail to JPG for compatibility with M4A
             {
                 'key': 'FFmpegThumbnailsConvertor',
                 'format': 'jpg',
             },
-            # 3. Ekstrak Audio
+            # 3. Extract Audio
             {
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'm4a',
                 'preferredquality': '192',
             },
-            # 4. Masukkan Metadata (WAJIB sebelum EmbedThumbnail di beberapa versi)
+            # 4. Add Metadata (MANDATORY before EmbedThumbnail in some versions)
             {
                 'key': 'FFmpegMetadata',
                 'add_metadata': True,
@@ -31,19 +31,19 @@ def download_high_quality_m4a(url):
         ],
         
         'outtmpl': '%(title)s.%(ext)s',
-        'ffmpeg_location': 'C:/Users/CERN/Documents/ffmpeg-master-latest-win64-gpl-shared/bin',
+        # 'ffmpeg_location': 'C:/Users/CERN/Documents/ffmpeg-master-latest-win64-gpl-shared/bin', # Windows path, typically not needed on Mac if in PATH
         
-        # Menghapus file thumbnail .jpg setelah berhasil di-embed ke .m4a
+        # Delete the .jpg thumbnail file after successfully embedding into .m4a
         'writemetadata': False,
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-            print("\nSelesai! Audio 256kbps dengan thumbnail berhasil dibuat.")
+            print("\nFinished! Audio with thumbnail successfully created.")
     except Exception as e:
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    link = input("Masukkan URL YouTube: ")
+    link = input("Enter YouTube URL: ")
     download_high_quality_m4a(link)
